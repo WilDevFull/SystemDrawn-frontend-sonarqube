@@ -5,20 +5,19 @@ on:
     branches:
       - main
       - master
-      - develop
-      - 'feat/**'
+      - '**' # Roda em qualquer branch para você testar
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
   sonarcloud:
-    name: Analisar código com SonarCloud
+    name: Analisar Frontend com SonarCloud
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Necessário para o Sonar ler o histórico do Git
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -27,7 +26,7 @@ jobs:
           cache: 'npm'
 
       - name: Instalar dependências
-        run: npm ci
+        run: npm install # Usando install para evitar erros de lockfile desatualizado
 
       - name: Executar SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v4
